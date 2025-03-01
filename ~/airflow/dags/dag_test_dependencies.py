@@ -5,6 +5,7 @@ from airflow.operators.bash_operator import BashOperator
 from airflow.models import Variable
 
 weather_dir = Variable.get("weather_dir")
+# weather_dir = "~/Library/CloudStorage/GoogleDrive-luke.z0423@gmail.com/My\ Drive/Colab\ Notebooks/AiCore/Courses/AWS\ Data\ Engineering\ Services/airflow-weather-data"
 
 default_args = {
     "owner": "Ivan",
