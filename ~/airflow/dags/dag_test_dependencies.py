@@ -2,6 +2,9 @@ from airflow.models import DAG
 from datetime import datetime
 from datetime import timedelta
 from airflow.operators.bash_operator import BashOperator
+from airflow.models import Variable
+
+weather_dir = Variable.get("weather_dir")
 
 default_args = {
     "owner": "Ivan",
@@ -26,22 +29,22 @@ with DAG(
     # Define the tasks. Here we are going to define only one bash operator
     date_task = BashOperator(
         task_id="write_date",
-        bash_command="cd ~/Library/CloudStorage/GoogleDrive-luke.z0423@gmail.com/My\ Drive/Colab\ Notebooks/AiCore/Courses/AWS\ Data\ Engineering\ Services/airflow-weather-data && date >> date.txt",
+        bash_command="cd weather_dir && date >> date.txt",
         dag=dag,
     )
     add_task = BashOperator(
         task_id="add_files",
-        bash_command="cd ~/Library/CloudStorage/GoogleDrive-luke.z0423@gmail.com/My\ Drive/Colab\ Notebooks/AiCore/Courses/AWS\ Data\ Engineering\ Services/airflow-weather-data && git add .",
+        bash_command="cd weather_dir && git add .",
         dag=dag,
     )
     commit_task = BashOperator(
         task_id="commit_files",
-        bash_command='cd ~/Library/CloudStorage/GoogleDrive-luke.z0423@gmail.com/My\ Drive/Colab\ Notebooks/AiCore/Courses/AWS\ Data\ Engineering\ Services/airflow-weather-data && git commit -m "Update date"',
+        bash_command='cd weather_dir && git commit -m "Update date"',
         dag=dag,
     )
     push_task = BashOperator(
         task_id="push_files",
-        bash_command="cd ~/Library/CloudStorage/GoogleDrive-luke.z0423@gmail.com/My\ Drive/Colab\ Notebooks/AiCore/Courses/AWS\ Data\ Engineering\ Services/airflow-weather-data && git push",
+        bash_command="cd weather_dir && git push",
         dag=dag,
     )
 
